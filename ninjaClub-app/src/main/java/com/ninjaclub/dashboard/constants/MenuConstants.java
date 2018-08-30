@@ -6,7 +6,7 @@ public class MenuConstants {
 	
 	public static final String WELCOME_OPTIONS_1 = "\n1. New Game\n2. Resume\n3. Quit \n>";
 	
-	public static final String WELCOME_OPTIONS_2 = "\n1. New Level\n2. Quit \n>";
+	public static final String WELCOME_OPTIONS_2 = "\n1. Proceed\n2. Quit \n>";
 	
 	public static final String SEPARATOR_STR_1 = "\n#######################################################################################\n";
 	

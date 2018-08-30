@@ -1,7 +1,6 @@
 package com.ninjaclub.dashboard.model;
 
 import java.util.Random;
-import java.util.Scanner;
 
 import com.ninjaclub.dashboard.constants.PlayerConstants;
 import com.ninjaclub.dashboard.util.FightUtil;
@@ -103,6 +102,18 @@ public class Player {
 	}
 	
 	public void drinkHealthPostion() {
+		if(this.getHealthPotionsNum() > 0) {
+			int playerHP = this.getHp();
+			int playerHealthPostionNum = this.getHealthPotionsNum();
+			playerHP += PlayerConstants.HEALTH_POTION_HEAL_AMOUNT;
+			this.setHp(playerHP);
+			playerHealthPostionNum--;
+			this.setHealthPotionsNum(playerHealthPostionNum);
+			System.out.println("You have "+this.getHealthPotionsNum() +" health potions remaining. Use them wisely. Your new HP is: " +this.getHp() +".");
+			
+		}else {
+			System.out.println("Sorry! No health potions left.");
+		}
 		
 	}
 

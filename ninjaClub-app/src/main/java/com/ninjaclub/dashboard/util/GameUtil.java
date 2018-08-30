@@ -35,19 +35,22 @@ public class GameUtil {
 
 	public void start() {
 		level++;
+		if(level > 1 && player.getHp() <= 1) level = 0;
 		welcomeMessage(level);
 		while(flag) {
-			if(level > 1) {
+			if(level > 1 && player.getHp() > 1) {
 				switch(sc.nextInt()) {
 				case 1:	levelUp();
 				break;
 
 				case 2: quit();
 				break;
-
+				
+				default : System.out.println("Enter a valid choice");
 				}
 
 			}else {
+				
 				switch(sc.nextInt()) {
 				case 1:	newGame();
 				break;
@@ -58,6 +61,7 @@ public class GameUtil {
 				case 3: quit();
 				break;
 
+				default : System.out.println("Enter a valid choice");
 				}
 			}
 		}
@@ -65,14 +69,15 @@ public class GameUtil {
 
 	public void welcomeMessage(int level) {
 		System.out.println(MenuConstants.WELCOME_MSG);
-		
+
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println("This is level " +level);
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		if(level > 1)
+		if(level > 1 && player.getHp() > 1)
 			System.out.println(MenuConstants.WELCOME_OPTIONS_2);
-		else	
+		else {	
 			System.out.println(MenuConstants.WELCOME_OPTIONS_1);
+		}
 	}
 
 	public void levelUp() {
@@ -83,13 +88,14 @@ public class GameUtil {
 		
 		Enemy.stream().forEach(System.out::println);
 		try {
+			sc.nextLine();
 			enemy = playerUtil.createNewPlayer(sc.nextLine());
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println(enemy.getName() +"stats are:\t|\t" +"HP:" +enemy.getHp() +"\t|\t" +"Reputation:" +enemy.getReputation() +"\t|");
+		System.out.println(enemy.getName() +" stats are:\t|\t" +"HP:" +enemy.getHp() +"\t|\t" +"Reputation:" +enemy.getReputation() +"\t|");
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println(MenuConstants.NEW_GAME_MSG_3);
 		
@@ -99,6 +105,8 @@ public class GameUtil {
 
 		case 2: quit();
 		break;
+		
+		//default : System.out.println("Enter a valid choice");
 		}
 	
 	}
@@ -133,7 +141,7 @@ public class GameUtil {
 		}
 		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println(enemy.getName() +"stats are:\t|\t" +"HP:" +enemy.getHp() +"\t|\t" +"Reputation:" +enemy.getReputation() +"\t|");
+		System.out.println(enemy.getName() +" stats are:\t|\t" +"HP:" +enemy.getHp() +"\t|\t" +"Reputation:" +enemy.getReputation() +"\t|");
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println(MenuConstants.NEW_GAME_MSG_3);
 		
@@ -143,6 +151,8 @@ public class GameUtil {
 
 		case 2: quit();
 		break;
+		
+		//default : System.out.println("Enter a valid choice, let's try again.");
 		}
 	}
 
@@ -156,6 +166,8 @@ public class GameUtil {
 		break;
 
 		case 2: saveAndQuit();
+		
+		//default : System.out.println("Enter a valid choice");
 		}
 
 	}
@@ -175,6 +187,7 @@ public class GameUtil {
 		case 2: quit();
 		break;
 		
+		//default : System.out.println("Enter a valid choice");
 		}
 		
 	}
