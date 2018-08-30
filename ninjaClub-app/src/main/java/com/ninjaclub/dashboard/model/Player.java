@@ -1,18 +1,40 @@
 package com.ninjaclub.dashboard.model;
 
+import java.util.Random;
+import java.util.Scanner;
+
+import com.ninjaclub.dashboard.constants.PlayerConstants;
+import com.ninjaclub.dashboard.util.FightUtil;
+import com.ninjaclub.dashboard.util.GameUtil;
+
+/**
+ * @author shreya
+ *
+ */
 public class Player {
 
-private String name;
+	private String name;
 	
 	private int hp;
 	
 	private int reputation;
 	
-	private int healthPotions;
+	private int healthPotionsNum;
 	
-	private int attackDamage;
+//	private int attackDamage;
 	
 	private String armor;
+	
+	FightUtil fightUtil;
+	
+	GameUtil gameUtil;
+	
+	
+	
+	public Player() {
+		this.fightUtil = new FightUtil();
+		this.gameUtil = new GameUtil();
+	}
 
 	public String getName() {
 		return name;
@@ -38,22 +60,6 @@ private String name;
 		this.reputation = reputation;
 	}
 
-	public int getHealthPotions() {
-		return healthPotions;
-	}
-
-	public void setHealthPotions(int healthPotions) {
-		this.healthPotions = healthPotions;
-	}
-
-	public int getAttackDamage() {
-		return attackDamage;
-	}
-
-	public void setAttackDamage(int attackDamage) {
-		this.attackDamage = attackDamage;
-	}
-
 	public String getArmor() {
 		return armor;
 	}
@@ -62,5 +68,42 @@ private String name;
 		this.armor = armor;
 	}
 	
+	public int getHealthPotionsNum() {
+		return healthPotionsNum;
+	}
+
+	public void setHealthPotionsNum(int healthPotionsNum) {
+		this.healthPotionsNum = healthPotionsNum;
+	}
+
 	
+	public void processFight(Player enemy) {
+		Random random = new Random();
+		int damageDone = random.nextInt(PlayerConstants.PLAYER_ATTACK_DAMAGE);
+		int damageTaken = random.nextInt(PlayerConstants.ENEMY_ATTACK_DAMAGE);
+		int enemyHP = enemy.getHp();
+		int enemyReputation = enemy.getReputation();
+		int playerHP = this.getHp();
+		int playerReputation = this.getReputation();
+		
+		playerReputation += damageDone;
+		playerHP -= damageTaken;
+		this.setHp(playerHP);
+		this.setReputation(playerReputation);
+		
+		enemyReputation += damageTaken;
+		enemyHP -= damageDone;
+		enemy.setHp(enemyHP);
+		enemy.setReputation(enemyReputation);
+		
+		System.out.println("You strike " +enemy.getName() +" and gain reputation " +this.getReputation() +". Your HP is "
+				+this.getHp() +". " +enemy.getName() +" reputation is " +enemy.getReputation() +" and HP is " +enemy.getHp()
+				+". \nYou have " +this.getHealthPotionsNum() +" health poitions left!");
+		
+	}
+	
+	public void drinkHealthPostion() {
+		
+	}
+
 }

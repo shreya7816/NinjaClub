@@ -8,7 +8,10 @@ public class PlayerConstants {
 	
 	public static final int MAX_HEALTH_POTIONS = 5;
 	
-	public static final int MIN_ATTACK_DAMAGE = 5;
+	public static final int PLAYER_ATTACK_DAMAGE = 50;
 	
-	public static final int MAX_ATTACK_DAMAGE = 25;
+	public static final int ENEMY_ATTACK_DAMAGE = 25;
+	
+	public static final int HEALTH_POTION_HEAL_AMOUNT = 20;
+	
 }
