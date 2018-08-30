@@ -65,6 +65,7 @@ public class GameUtil {
 
 	public void welcomeMessage(int level) {
 		System.out.println(MenuConstants.WELCOME_MSG);
+		
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println("This is level " +level);
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
