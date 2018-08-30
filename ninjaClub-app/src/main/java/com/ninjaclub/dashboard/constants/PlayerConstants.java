@@ -2,7 +2,7 @@ package com.ninjaclub.dashboard.constants;
 
 public class PlayerConstants {
 
-public static final int MAX_HP = 100;
+	public static final int MAX_HP = 100;
 	
 	public static final int INITIAL_REPUTATION = 10;
 	
