@@ -33,15 +33,20 @@ public class FightUtil {
 			}else {
 				fightDialogue();
 
-				
-			//	int i =sc.nextInt();
-			//	System.out.println("input" +i);
 				switch(sc.nextInt()) {
 
 				case 1: player.processFight(enemy);
+				System.out.println("You strike " +enemy.getName() +" and gain reputation " +player.getReputation() +". Your HP is "
+						+player.getHp() +". " +enemy.getName() +" reputation is " +enemy.getReputation() +" and HP is " +enemy.getHp()
+						+". \nYou have " +player.getHealthPotionsNum() +" health poitions left!");
 				break;
 
-				case 2: player.drinkHealthPostion();
+				case 2: int healthPotionsLeft = player.drinkHealthPostion();
+				if(healthPotionsLeft == 0 )
+					System.out.println("Sorry! No health potions left.");
+				else
+					System.out.println("You have "+player.getHealthPotionsNum() +" health potions left. Use them wisely. Your new HP is: " +player.getHp() +".");
+				
 				break;
 
 				case 3: fightDialogueFlag = false;

@@ -20,20 +20,29 @@ public class Player {
 	
 	private int healthPotionsNum;
 	
-//	private int attackDamage;
+	//private String armor;
 	
-	private String armor;
+	/*FightUtil fightUtil;
 	
-	FightUtil fightUtil;
-	
-	GameUtil gameUtil;
+	GameUtil gameUtil;*/
 	
 	
 	
 	public Player() {
-		this.fightUtil = new FightUtil();
-		this.gameUtil = new GameUtil();
+		
 	}
+	
+	
+	
+	public Player(String name, int hp, int reputation, int healthPotionsNum) {
+		super();
+		this.name = name;
+		this.hp = hp;
+		this.reputation = reputation;
+		this.healthPotionsNum = healthPotionsNum;
+	}
+
+
 
 	public String getName() {
 		return name;
@@ -59,13 +68,13 @@ public class Player {
 		this.reputation = reputation;
 	}
 
-	public String getArmor() {
+	/*public String getArmor() {
 		return armor;
 	}
 
 	public void setArmor(String armor) {
 		this.armor = armor;
-	}
+	}*/
 	
 	public int getHealthPotionsNum() {
 		return healthPotionsNum;
@@ -95,26 +104,21 @@ public class Player {
 		enemy.setHp(enemyHP);
 		enemy.setReputation(enemyReputation);
 		
-		System.out.println("You strike " +enemy.getName() +" and gain reputation " +this.getReputation() +". Your HP is "
-				+this.getHp() +". " +enemy.getName() +" reputation is " +enemy.getReputation() +" and HP is " +enemy.getHp()
-				+". \nYou have " +this.getHealthPotionsNum() +" health poitions left!");
-		
 	}
 	
-	public void drinkHealthPostion() {
+	public int drinkHealthPostion() {
 		if(this.getHealthPotionsNum() > 0) {
 			int playerHP = this.getHp();
-			int playerHealthPostionNum = this.getHealthPotionsNum();
+			int playerHealthPotionNum = this.getHealthPotionsNum();
 			playerHP += PlayerConstants.HEALTH_POTION_HEAL_AMOUNT;
 			this.setHp(playerHP);
-			playerHealthPostionNum--;
-			this.setHealthPotionsNum(playerHealthPostionNum);
-			System.out.println("You have "+this.getHealthPotionsNum() +" health potions remaining. Use them wisely. Your new HP is: " +this.getHp() +".");
+			playerHealthPotionNum--;
+			this.setHealthPotionsNum(playerHealthPotionNum);
+			return playerHealthPotionNum;
 			
 		}else {
-			System.out.println("Sorry! No health potions left.");
+			return 0;
 		}
-		
 	}
 
 }
