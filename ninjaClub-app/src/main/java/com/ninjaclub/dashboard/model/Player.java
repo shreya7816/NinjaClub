@@ -3,8 +3,6 @@ package com.ninjaclub.dashboard.model;
 import java.util.Random;
 
 import com.ninjaclub.dashboard.constants.PlayerConstants;
-import com.ninjaclub.dashboard.util.FightUtil;
-import com.ninjaclub.dashboard.util.GameUtil;
 
 /**
  * @author shreya
@@ -22,17 +20,9 @@ public class Player {
 	
 	//private String armor;
 	
-	/*FightUtil fightUtil;
-	
-	GameUtil gameUtil;*/
-	
-	
-	
 	public Player() {
 		
 	}
-	
-	
 	
 	public Player(String name, int hp, int reputation, int healthPotionsNum) {
 		super();
