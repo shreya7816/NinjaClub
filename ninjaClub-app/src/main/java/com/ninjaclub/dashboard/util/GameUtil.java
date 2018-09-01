@@ -24,7 +24,7 @@ public class GameUtil {
 	FightUtil fightUtil;
 
 	GameState gameState;
-
+	
 	int count;
 
 	public static final Scanner sc = new Scanner(System.in);
@@ -41,6 +41,7 @@ public class GameUtil {
 		welcomeMessage(level, player);
 		while(flag) {
 			if(level > 1 && player.getHp() > 1) {
+				
 				switch(sc.nextInt()) {
 				case 1:	levelUp(player, enemy);
 				break;
@@ -88,24 +89,7 @@ public class GameUtil {
 
 	public void levelUp(Player player, Player enemy) {
 		displayStats(player);
-		
-		/*int enemyEnumIndex;
-		sc.nextLine();
-		do {
-			System.out.println(MenuConstants.NEW_GAME_MSG_2);
-			resetCount();
-			Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
-			enemyEnumIndex = sc.nextInt();
-		}while(validateEnemy(enemyEnumIndex));
-		enemyEnumIndex--;
-		String enemyName = Enemy.values()[enemyEnumIndex].toString();
-		Random random = new Random();
-		Weapon weaponName = Weapon.values()[random.nextInt(Weapon.values().length)];
-
-		enemy = playerUtil.createNewPlayer(enemyName, weaponName);
-		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
-		
-*/		enemy = createEnemy(enemy);
+		enemy = createEnemy(enemy);
 		displayStats(enemy);
 		readyForFight(player, enemy);
 	}
@@ -113,14 +97,18 @@ public class GameUtil {
 	public Player createEnemy(Player enemy) {
 		int enemyEnumIndex;
 		sc.nextLine();
+		int counter = 0;
 		do {
+			counter++;
+			if(counter > 1)
+				System.out.println(MenuConstants.INVALID_CHOICE);
 			System.out.println(MenuConstants.NEW_GAME_MSG_2);
 			resetCount();
 			Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
 			enemyEnumIndex = sc.nextInt();
 		}while(validateEnemy(enemyEnumIndex));
 		enemyEnumIndex--;
-		String enemyName = Enemy.values()[enemyEnumIndex].toString();
+		String enemyName = Enemy.values()[enemyEnumIndex].getDisplayName();
 		Random random = new Random();
 		Weapon weaponName = Weapon.values()[random.nextInt(Weapon.values().length)];
 
@@ -154,7 +142,11 @@ public class GameUtil {
 	
 	private Weapon selectWeapon() {
 		int weaponEnumIndex;
+		int counter = 0;
 		do {
+			counter++;
+			if(counter > 1)
+				System.out.println(MenuConstants.INVALID_CHOICE);
 			System.out.println(MenuConstants.NEW_GAME_QUESTION_2);
 			System.out.println(MenuConstants.SEPARATOR_STR_2);
 			resetCount();
@@ -170,6 +162,8 @@ public class GameUtil {
 
 	private boolean validateWeapon(int weaponEnumIndex) {
 		weaponEnumIndex--;
+		if(weaponEnumIndex > Weapon.values().length || weaponEnumIndex < 0)
+			return true;
 		String weaponName = Weapon.values()[weaponEnumIndex].getDisplayName();
 		for (Weapon enemyEnum : Weapon.values()) {
 			if (enemyEnum.getDisplayName().equalsIgnoreCase(weaponName)) {
@@ -180,7 +174,7 @@ public class GameUtil {
 	}
 
 	private boolean validatePlayerName(String playerName) {
-		if (!playerName.matches(".*[^a-z].*")) { 
+		if (playerName.matches("^[\\p{L} .'-]+$")) {
 			return false;
 		}
 		System.out.println("Hey! there " +playerName +" is no valid name. What's your real name??\nEnter your real name.");
@@ -189,6 +183,8 @@ public class GameUtil {
 
 	private boolean validateEnemy(int enemyEnumIndex) {
 		enemyEnumIndex--;
+		if(enemyEnumIndex > Enemy.values().length || enemyEnumIndex < 0)
+			return true;
 		String enemyName = Enemy.values()[enemyEnumIndex].getDisplayName();
 		for (Enemy enemyEnum : Enemy.values()) {
 			if (enemyEnum.getDisplayName().equalsIgnoreCase(enemyName)) {
@@ -310,8 +306,8 @@ public class GameUtil {
 
 	private void displayStats(Player player) {
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println(player.getName() +" stats are:\t|\t" +"HP:" +player.getHp() +"\t|\t" +"Reputation:" +player.getReputation() +"\t|\t" +"Weapon"
-		+"\t|\t" +player.getWeapon());
+		System.out.println(player.getName() +" stats are:\t|\t" +"HP: " +player.getHp() +"\t|\t" +"Reputation: " +player.getReputation() +"\t|\t" +"Weapon: "
+		+player.getWeapon());
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 	}
 
