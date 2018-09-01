@@ -10,22 +10,29 @@ import com.ninjaclub.dashboard.model.GameState;
 
 public class GameStateUtil {
 
+	GameState gameState;
+	
+	public GameStateUtil(GameState gameState) {
+		super();
+		this.gameState = gameState;
+	}
+	
 	public void readGameState() {
 		
 	}
 	
-	public void writeGameState(GameState gameState) {
-
+	public void writeGameState() {
+		System.out.println("Saving game state " +gameState.toString());
 		FileOutputStream fout = null;
 		ObjectOutputStream oos = null;
 
 		try {
 
-			fout = new FileOutputStream("c:\\temp\\address.ser");
+			fout = new FileOutputStream("C:\\NinjaClub\\gamestate.ser");
 			oos = new ObjectOutputStream(fout);
 			oos.writeObject(gameState);
 
-			System.out.println("Done");
+			System.out.println("Saved!!");
 
 		} catch (Exception ex) {
 
@@ -66,7 +73,8 @@ public class GameStateUtil {
 
 	}
 
-	public GameState deserialzeAddress(String filename) {
+	public GameState deserialzeAddress(String filename)throws IOException,
+    ClassNotFoundException {
 
 		GameState gameState = null;
 

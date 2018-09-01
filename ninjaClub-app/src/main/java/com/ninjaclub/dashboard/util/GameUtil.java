@@ -3,6 +3,7 @@ package com.ninjaclub.dashboard.util;
 import java.util.Scanner;
 
 import com.ninjaclub.dashboard.constants.MenuConstants;
+import com.ninjaclub.dashboard.model.GameState;
 import com.ninjaclub.dashboard.model.Player;
 import com.ninjaclub.dashboard.model.enums.Enemy;
 
@@ -23,6 +24,8 @@ public class GameUtil {
 	PlayerUtil playerUtil;
 	
 	FightUtil fightUtil;
+	
+	GameState gameState;
 	
 	public static final Scanner sc = new Scanner(System.in);
 
@@ -55,7 +58,9 @@ public class GameUtil {
 				case 1:	newGame();
 				break;
 
-				case 2: resumeGame();
+				case 2: //resumeGame();
+					//gameState = new GameState(player, enemy, level);
+				//	gameState.saveAndQuit();
 				break;
 
 				case 3: quit();
@@ -112,8 +117,8 @@ public class GameUtil {
 	}
 	
 	public void newGame() {
-		Player player = new Player();
-		Player enemy = new Player();
+		player = new Player();
+		enemy = new Player();
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println(MenuConstants.NEW_GAME_STORY);
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
@@ -165,7 +170,8 @@ public class GameUtil {
 		System.exit(0);
 		break;
 
-		case 2: saveAndQuit();
+		case 2: gameState = new GameState(player, enemy, level);
+		gameState.saveAndQuit();
 		
 		//default : System.out.println("Enter a valid choice");
 		}
@@ -206,11 +212,5 @@ public class GameUtil {
 		restart(player, enemy);
 	}
 	
-	public void saveAndQuit() {
-		
-	}
 	
-	public void resumeGame() {
-
-	}
 }

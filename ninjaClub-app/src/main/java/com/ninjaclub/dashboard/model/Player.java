@@ -1,5 +1,6 @@
 package com.ninjaclub.dashboard.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import com.ninjaclub.dashboard.constants.PlayerConstants;
@@ -8,8 +9,10 @@ import com.ninjaclub.dashboard.constants.PlayerConstants;
  * @author shreya
  *
  */
-public class Player {
+public class Player implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	
 	private int hp;
@@ -31,8 +34,6 @@ public class Player {
 		this.reputation = reputation;
 		this.healthPotionsNum = healthPotionsNum;
 	}
-
-
 
 	public String getName() {
 		return name;
@@ -74,7 +75,12 @@ public class Player {
 		this.healthPotionsNum = healthPotionsNum;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Player [name=" + name + ", hp=" + hp + ", reputation=" + reputation + ", healthPotionsNum="
+				+ healthPotionsNum + "]";
+	}
+
 	public void processFight(Player enemy) {
 		Random random = new Random();
 		int damageDone = random.nextInt(PlayerConstants.PLAYER_ATTACK_DAMAGE);
