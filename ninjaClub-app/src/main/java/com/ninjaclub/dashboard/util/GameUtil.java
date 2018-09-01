@@ -97,7 +97,7 @@ public class GameUtil {
 			System.out.println(e);
 		}
 		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
-		displayStats(player);
+		displayStats(enemy);
 		readyForFight(player, enemy);
 		
 	}
@@ -119,29 +119,31 @@ public class GameUtil {
 		System.out.println("\nHey! " +player.getName() +MenuConstants.GREETING_MSG);
 		System.out.println(MenuConstants.NEW_GAME_MSG_1);
 		displayStats(player);
-		String enemyName;
+		int enemyEnumIndex;
 		do {
 			System.out.println(MenuConstants.NEW_GAME_MSG_2);
 			resetCount();
 			Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
-			enemyName = sc.nextLine();
-		}while(validateEnemy(enemyName));
-		
+			enemyEnumIndex = sc.nextInt();
+		}while(validateEnemy(enemyEnumIndex));
+		enemyEnumIndex--;
+		String enemyName = Enemy.values()[enemyEnumIndex].toString();
 		try {
 			enemy = playerUtil.createNewPlayer(enemyName);
 		}catch(Exception e) {
 			System.out.println(e);
 		}
 		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
-		displayStats(player);
+		displayStats(enemy);
 		readyForFight(player, enemy);
 
 	}
 	
-	private boolean validateEnemy(String enemy) {
+	private boolean validateEnemy(int enemyEnumIndex) {
+		enemyEnumIndex--;
+		String enemyName = Enemy.values()[enemyEnumIndex].getDisplayName();
 		for (Enemy enemyEnum : Enemy.values()) {
-			if (enemyEnum.getDisplayName().equalsIgnoreCase(enemy)) {
-				System.out.println(enemyEnum.name()  +" " +enemy);
+			if (enemyEnum.getDisplayName().equalsIgnoreCase(enemyName)) {
 				return false;
 			}
 		}
