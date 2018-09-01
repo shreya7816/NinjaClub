@@ -36,7 +36,6 @@ public enum Enemy {
 	
 	 public static Stream<Enemy> stream() {
 	     return Stream.of(Enemy.values()); 
-		
 	}
 	
 } 

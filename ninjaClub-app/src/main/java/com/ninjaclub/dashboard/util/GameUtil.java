@@ -1,11 +1,13 @@
 package com.ninjaclub.dashboard.util;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import com.ninjaclub.dashboard.constants.MenuConstants;
 import com.ninjaclub.dashboard.model.GameState;
 import com.ninjaclub.dashboard.model.Player;
 import com.ninjaclub.dashboard.model.enums.Enemy;
+import com.ninjaclub.dashboard.model.enums.Weapon;
 
 /**
  * @author shreya
@@ -22,7 +24,7 @@ public class GameUtil {
 	FightUtil fightUtil;
 
 	GameState gameState;
-	
+
 	int count;
 
 	public static final Scanner sc = new Scanner(System.in);
@@ -31,7 +33,6 @@ public class GameUtil {
 		this.flag = true;
 		this.playerUtil = new PlayerUtil();
 		this.fightUtil = new FightUtil();
-		
 	}
 
 	public void start(Player player, Player enemy) {
@@ -87,39 +88,9 @@ public class GameUtil {
 
 	public void levelUp(Player player, Player enemy) {
 		displayStats(player);
-		System.out.println(MenuConstants.NEW_GAME_MSG_2);
-		resetCount();
-		Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
-		try {
-			sc.nextLine();
-			enemy = playerUtil.createNewPlayer(sc.nextLine());
-		}catch(Exception e) {
-			System.out.println(e);
-		}
-		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
-		displayStats(enemy);
-		readyForFight(player, enemy);
 		
-	}
-
-	
-	public void newGame(Player player, Player enemy) {
-		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println(MenuConstants.NEW_GAME_STORY);
-		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println(MenuConstants.NEW_GAME_QUESTION_1);
-		System.out.println(MenuConstants.SEPARATOR_STR_2);
+		/*int enemyEnumIndex;
 		sc.nextLine();
-		try {
-			player = playerUtil.createNewPlayer(sc.nextLine());
-		}catch(Exception e) {
-			System.out.println(e);
-		}
-		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println("\nHey! " +player.getName() +MenuConstants.GREETING_MSG);
-		System.out.println(MenuConstants.NEW_GAME_MSG_1);
-		displayStats(player);
-		int enemyEnumIndex;
 		do {
 			System.out.println(MenuConstants.NEW_GAME_MSG_2);
 			resetCount();
@@ -128,17 +99,94 @@ public class GameUtil {
 		}while(validateEnemy(enemyEnumIndex));
 		enemyEnumIndex--;
 		String enemyName = Enemy.values()[enemyEnumIndex].toString();
-		try {
-			enemy = playerUtil.createNewPlayer(enemyName);
-		}catch(Exception e) {
-			System.out.println(e);
-		}
+		Random random = new Random();
+		Weapon weaponName = Weapon.values()[random.nextInt(Weapon.values().length)];
+
+		enemy = playerUtil.createNewPlayer(enemyName, weaponName);
 		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
+		
+*/		enemy = createEnemy(enemy);
+		displayStats(enemy);
+		readyForFight(player, enemy);
+	}
+
+	public Player createEnemy(Player enemy) {
+		int enemyEnumIndex;
+		sc.nextLine();
+		do {
+			System.out.println(MenuConstants.NEW_GAME_MSG_2);
+			resetCount();
+			Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
+			enemyEnumIndex = sc.nextInt();
+		}while(validateEnemy(enemyEnumIndex));
+		enemyEnumIndex--;
+		String enemyName = Enemy.values()[enemyEnumIndex].toString();
+		Random random = new Random();
+		Weapon weaponName = Weapon.values()[random.nextInt(Weapon.values().length)];
+
+		enemy = playerUtil.createNewPlayer(enemyName, weaponName);
+		System.out.println("Your must be brave to choose " +enemy.getName() +"!\n");
+		
+		return enemy;
+	}
+	public void newGame(Player player, Player enemy) {
+		System.out.println(MenuConstants.SEPARATOR_STR_2);
+		System.out.println(MenuConstants.NEW_GAME_STORY);
+		System.out.println(MenuConstants.SEPARATOR_STR_2);
+		sc.nextLine();
+		String playerName;
+		do {
+			System.out.println(MenuConstants.NEW_GAME_QUESTION_1);
+			System.out.println(MenuConstants.SEPARATOR_STR_2);
+			playerName = sc.nextLine();
+		}while(validatePlayerName(playerName));
+		System.out.println(MenuConstants.SEPARATOR_STR_2);
+		System.out.println("\nHey! " +playerName +MenuConstants.GREETING_MSG);
+		Weapon weaponName = selectWeapon();
+		player = playerUtil.createNewPlayer(playerName, weaponName);
+		System.out.println(MenuConstants.NEW_GAME_MSG_1);
+		displayStats(player);
+		enemy = createEnemy(enemy);
 		displayStats(enemy);
 		readyForFight(player, enemy);
 
 	}
 	
+	private Weapon selectWeapon() {
+		int weaponEnumIndex;
+		do {
+			System.out.println(MenuConstants.NEW_GAME_QUESTION_2);
+			System.out.println(MenuConstants.SEPARATOR_STR_2);
+			resetCount();
+			Weapon.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
+			weaponEnumIndex = sc.nextInt();
+		}while(validateWeapon(weaponEnumIndex));
+		weaponEnumIndex--;
+		Weapon weaponName = Weapon.values()[weaponEnumIndex];
+		System.out.println(MenuConstants.SEPARATOR_STR_2);
+		System.out.println(weaponName.getDisplayName() + " is an excellent choice. \n" );
+		return weaponName;
+	}
+
+	private boolean validateWeapon(int weaponEnumIndex) {
+		weaponEnumIndex--;
+		String weaponName = Weapon.values()[weaponEnumIndex].getDisplayName();
+		for (Weapon enemyEnum : Weapon.values()) {
+			if (enemyEnum.getDisplayName().equalsIgnoreCase(weaponName)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean validatePlayerName(String playerName) {
+		if (!playerName.matches(".*[^a-z].*")) { 
+			return false;
+		}
+		System.out.println("Hey! there " +playerName +" is no valid name. What's your real name??\nEnter your real name.");
+		return true;
+	}
+
 	private boolean validateEnemy(int enemyEnumIndex) {
 		enemyEnumIndex--;
 		String enemyName = Enemy.values()[enemyEnumIndex].getDisplayName();
@@ -262,7 +310,8 @@ public class GameUtil {
 
 	private void displayStats(Player player) {
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		System.out.println(player.getName() +" stats are:\t|\t" +"HP:" +player.getHp() +"\t|\t" +"Reputation:" +player.getReputation() +"\t|");
+		System.out.println(player.getName() +" stats are:\t|\t" +"HP:" +player.getHp() +"\t|\t" +"Reputation:" +player.getReputation() +"\t|\t" +"Weapon"
+		+"\t|\t" +player.getWeapon());
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 	}
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Random;
 
 import com.ninjaclub.dashboard.constants.PlayerConstants;
+import com.ninjaclub.dashboard.model.enums.Weapon;
 
 /**
  * @author shreya
@@ -21,7 +22,7 @@ public class Player implements Serializable {
 	
 	private int healthPotionsNum;
 	
-	//private String armor;
+	private Weapon weapon;
 	
 	public Player() {
 		
@@ -59,14 +60,14 @@ public class Player implements Serializable {
 		this.reputation = reputation;
 	}
 
-	/*public String getArmor() {
-		return armor;
+	public Weapon getWeapon() {
+		return weapon;
 	}
 
-	public void setArmor(String armor) {
-		this.armor = armor;
-	}*/
-	
+	public void setWeapon(Weapon weapon) {
+		this.weapon = weapon;
+	}
+
 	public int getHealthPotionsNum() {
 		return healthPotionsNum;
 	}
@@ -78,7 +79,7 @@ public class Player implements Serializable {
 	@Override
 	public String toString() {
 		return "Player [name=" + name + ", hp=" + hp + ", reputation=" + reputation + ", healthPotionsNum="
-				+ healthPotionsNum + "]";
+				+ healthPotionsNum + ", weapon=" + weapon + "]";
 	}
 
 	public void processFight(Player enemy) {
