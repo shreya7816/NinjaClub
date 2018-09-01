@@ -15,7 +15,7 @@ public enum Enemy {
 	THANOS("Thanos"),
 	HYDRA("Hydra"),
 	PINHEAD("Pinhead"),
-	DR_EVIL("Dr_Evil"),
+	DR_EVIL("Dr Evil"),
 	WHITE_WITCH("White Witch"),
 	LEX_LUTHOR("Lex Luthor"),
 	CAT_WOMAN("Catwoman");

@@ -22,6 +22,8 @@ public class GameUtil {
 	FightUtil fightUtil;
 
 	GameState gameState;
+	
+	int count;
 
 	public static final Scanner sc = new Scanner(System.in);
 
@@ -29,7 +31,7 @@ public class GameUtil {
 		this.flag = true;
 		this.playerUtil = new PlayerUtil();
 		this.fightUtil = new FightUtil();
-
+		
 	}
 
 	public void start(Player player, Player enemy) {
@@ -86,7 +88,8 @@ public class GameUtil {
 	public void levelUp(Player player, Player enemy) {
 		displayStats(player);
 		System.out.println(MenuConstants.NEW_GAME_MSG_2);
-		Enemy.stream().forEach(System.out::println);
+		resetCount();
+		Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
 		try {
 			sc.nextLine();
 			enemy = playerUtil.createNewPlayer(sc.nextLine());
@@ -116,11 +119,16 @@ public class GameUtil {
 		System.out.println("\nHey! " +player.getName() +MenuConstants.GREETING_MSG);
 		System.out.println(MenuConstants.NEW_GAME_MSG_1);
 		displayStats(player);
-		System.out.println(MenuConstants.NEW_GAME_MSG_2);
-
-		Enemy.stream().forEach(System.out::println);
+		String enemyName;
+		do {
+			System.out.println(MenuConstants.NEW_GAME_MSG_2);
+			resetCount();
+			Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
+			enemyName = sc.nextLine();
+		}while(validateEnemy(enemyName));
+		
 		try {
-			enemy = playerUtil.createNewPlayer(sc.nextLine());
+			enemy = playerUtil.createNewPlayer(enemyName);
 		}catch(Exception e) {
 			System.out.println(e);
 		}
@@ -128,6 +136,23 @@ public class GameUtil {
 		displayStats(player);
 		readyForFight(player, enemy);
 
+	}
+	
+	private boolean validateEnemy(String enemy) {
+		for (Enemy enemyEnum : Enemy.values()) {
+			if (enemyEnum.getDisplayName().equalsIgnoreCase(enemy)) {
+				System.out.println(enemyEnum.name()  +" " +enemy);
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void resetCount() {
+		count = 1;
+	}
+	private String getCount() {
+		return count++ +". ";
 	}
 
 	public void readyForFight(Player player, Player enemy) {
