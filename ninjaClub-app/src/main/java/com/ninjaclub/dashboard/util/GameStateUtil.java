@@ -1,5 +1,6 @@
 package com.ninjaclub.dashboard.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,31 +13,24 @@ import com.ninjaclub.dashboard.model.GameState;
 public class GameStateUtil {
 
 	GameState gameState;
-	
+
 	public GameStateUtil(GameState gameState) {
 		super();
 		this.gameState = gameState;
 	}
-	
+
 	public void writeGameState() {
 		System.out.println("Saving game state " +gameState.toString());
 		FileOutputStream fout = null;
 		ObjectOutputStream oos = null;
-
 		try {
-
 			fout = new FileOutputStream(GameConstants.FILE_PATH);
 			oos = new ObjectOutputStream(fout);
 			oos.writeObject(gameState);
-
 			System.out.println("Saved!!");
-
 		} catch (Exception ex) {
-
 			ex.printStackTrace();
-
 		} finally {
-
 			if (fout != null) {
 				try {
 					fout.close();
@@ -44,7 +38,6 @@ public class GameStateUtil {
 					e.printStackTrace();
 				}
 			}
-
 			if (oos != null) {
 				try {
 					oos.close();
@@ -57,26 +50,23 @@ public class GameStateUtil {
 	}
 
 	public void writeGameStateJDK7() {
-
+		System.out.println("Saving Game... ");
+		File file = new File(GameConstants.FILE_PATH);
+		file.delete();
 		try (ObjectOutputStream oos = 
 				new ObjectOutputStream(new FileOutputStream(GameConstants.FILE_PATH))) {
-
 			oos.writeObject(gameState);
-			System.out.println("Done");
-
+			System.out.println("Game saved!!");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 	}
 
 	public GameState readGameState(){
 		GameState gameState = null;
 		FileInputStream fin = null;
 		ObjectInputStream ois = null;
-
 		try {
-			
 			fin = new FileInputStream(GameConstants.FILE_PATH);
 			ois = new ObjectInputStream(fin);
 			gameState = (GameState) ois.readObject();
@@ -99,27 +89,19 @@ public class GameStateUtil {
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
 		return gameState;
-
 	}
 
 	public GameState readGameStateJDK7() {
-
 		GameState gameState = null;
-
-		try (ObjectInputStream ois 
-			= new ObjectInputStream(new FileInputStream(GameConstants.FILE_PATH))) {
-
+		try (ObjectInputStream ois 	= new ObjectInputStream(new FileInputStream(GameConstants.FILE_PATH))) {
 			gameState = (GameState) ois.readObject();
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-
 		return gameState;
-
 	}
 
 }

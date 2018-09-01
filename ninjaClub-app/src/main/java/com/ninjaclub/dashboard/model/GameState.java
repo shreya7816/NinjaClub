@@ -1,6 +1,5 @@
 package com.ninjaclub.dashboard.model;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import com.ninjaclub.dashboard.util.GameStateUtil;
@@ -20,8 +19,6 @@ public class GameState implements Serializable {
 	int level;
  
 	public GameState() {
-		/*this.player = new Player();
-		this.enemy = new Player();*/
 		
 	}
 
