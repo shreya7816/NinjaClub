@@ -11,7 +11,7 @@ import com.ninjaclub.dashboard.util.GameStateUtil;
  */
 public class GameState implements Serializable {
 
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 1L;
 	
 	Player player;
 	
@@ -20,7 +20,9 @@ public class GameState implements Serializable {
 	int level;
  
 	public GameState() {
-
+		/*this.player = new Player();
+		this.enemy = new Player();*/
+		
 	}
 
 	public GameState(Player player, Player enemy, int level) {
@@ -59,17 +61,28 @@ public class GameState implements Serializable {
 		return "GameState [player=" + player + ", enemy=" + enemy + ", level=" + level + "]";
 	}
 
+	public void setGameState(GameState gameState) {
+		this.player = gameState.player;
+		this.enemy = gameState.enemy;
+		this.level = gameState.level;
+	}
+	
 	public void saveAndQuit() {
 		GameStateUtil gameStateUtil = new GameStateUtil(this);
 		try {
-			gameStateUtil.writeGameState();
+			gameStateUtil.writeGameStateJDK7();
+			//gameStateUtil.writeGameState();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void resumeGame() {
-		
+	public GameState resumeGame() {
+		GameStateUtil gameStateUtil = new GameStateUtil(this);
+		setGameState(gameStateUtil.readGameStateJDK7());
+		//setGameState(gameStateUtil.readGameState());  
+		System.out.println("Loading game...\n" +this.toString());
+		return this;
 	}
 
 	

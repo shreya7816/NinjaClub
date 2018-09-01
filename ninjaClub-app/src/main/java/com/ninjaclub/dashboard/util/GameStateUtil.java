@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.ninjaclub.dashboard.constants.GameConstants;
 import com.ninjaclub.dashboard.model.GameState;
 
 public class GameStateUtil {
@@ -17,10 +18,6 @@ public class GameStateUtil {
 		this.gameState = gameState;
 	}
 	
-	public void readGameState() {
-		
-	}
-	
 	public void writeGameState() {
 		System.out.println("Saving game state " +gameState.toString());
 		FileOutputStream fout = null;
@@ -28,7 +25,7 @@ public class GameStateUtil {
 
 		try {
 
-			fout = new FileOutputStream("C:\\NinjaClub\\gamestate.ser");
+			fout = new FileOutputStream(GameConstants.FILE_PATH);
 			oos = new ObjectOutputStream(fout);
 			oos.writeObject(gameState);
 
@@ -59,10 +56,10 @@ public class GameStateUtil {
 		}
 	}
 
-	public void writeGameStateJDK7(GameState gameState) {
+	public void writeGameStateJDK7() {
 
 		try (ObjectOutputStream oos = 
-				new ObjectOutputStream(new FileOutputStream("c:\\temp\\address2.ser"))) {
+				new ObjectOutputStream(new FileOutputStream(GameConstants.FILE_PATH))) {
 
 			oos.writeObject(gameState);
 			System.out.println("Done");
@@ -73,17 +70,14 @@ public class GameStateUtil {
 
 	}
 
-	public GameState deserialzeAddress(String filename)throws IOException,
-    ClassNotFoundException {
-
+	public GameState readGameState(){
 		GameState gameState = null;
-
 		FileInputStream fin = null;
 		ObjectInputStream ois = null;
 
 		try {
-
-			fin = new FileInputStream(filename);
+			
+			fin = new FileInputStream(GameConstants.FILE_PATH);
 			ois = new ObjectInputStream(fin);
 			gameState = (GameState) ois.readObject();
 
@@ -98,7 +92,6 @@ public class GameStateUtil {
 					e.printStackTrace();
 				}
 			}
-
 			if (ois != null) {
 				try {
 					ois.close();
@@ -106,19 +99,18 @@ public class GameStateUtil {
 					e.printStackTrace();
 				}
 			}
-
+			
 		}
-
 		return gameState;
 
 	}
 
-	public GameState readGameStateJDK7(String filename) {
+	public GameState readGameStateJDK7() {
 
 		GameState gameState = null;
 
 		try (ObjectInputStream ois 
-			= new ObjectInputStream(new FileInputStream(filename))) {
+			= new ObjectInputStream(new FileInputStream(GameConstants.FILE_PATH))) {
 
 			gameState = (GameState) ois.readObject();
 
@@ -129,7 +121,5 @@ public class GameStateUtil {
 		return gameState;
 
 	}
-
-
 
 }

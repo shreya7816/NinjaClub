@@ -58,9 +58,12 @@ public class GameUtil {
 				case 1:	newGame();
 				break;
 
-				case 2: //resumeGame();
-					//gameState = new GameState(player, enemy, level);
-				//	gameState.saveAndQuit();
+				case 2: System.out.println("Loading last saved game...");
+				gameState = new GameState();
+				gameState = gameState.resumeGame();
+				this.player = gameState.getPlayer();
+				this.enemy = gameState.getEnemy();
+				readyForFight(player, enemy);
 				break;
 
 				case 3: quit();
@@ -148,6 +151,21 @@ public class GameUtil {
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println(enemy.getName() +" stats are:\t|\t" +"HP:" +enemy.getHp() +"\t|\t" +"Reputation:" +enemy.getReputation() +"\t|");
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
+		readyForFight(player, enemy);
+		/*System.out.println(MenuConstants.NEW_GAME_MSG_3);
+		
+		switch(sc.nextInt()) {
+		case 1: fightUtil.fight(player, enemy);
+		break;
+
+		case 2: quit();
+		break;
+		
+		//default : System.out.println("Enter a valid choice, let's try again.");
+		}*/
+	}
+
+	public void readyForFight(Player player, Player enemy) {
 		System.out.println(MenuConstants.NEW_GAME_MSG_3);
 		
 		switch(sc.nextInt()) {
@@ -160,7 +178,6 @@ public class GameUtil {
 		//default : System.out.println("Enter a valid choice, let's try again.");
 		}
 	}
-
 	public void quit() {
 		System.out.println(MenuConstants.QUIT_GAME_MSG_1);
 		switch(sc.nextInt()) {
@@ -172,7 +189,7 @@ public class GameUtil {
 
 		case 2: gameState = new GameState(player, enemy, level);
 		gameState.saveAndQuit();
-		
+		System.exit(0);
 		//default : System.out.println("Enter a valid choice");
 		}
 
