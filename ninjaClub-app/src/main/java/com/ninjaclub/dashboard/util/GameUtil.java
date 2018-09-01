@@ -1,5 +1,6 @@
 package com.ninjaclub.dashboard.util;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -7,7 +8,9 @@ import com.ninjaclub.dashboard.constants.MenuConstants;
 import com.ninjaclub.dashboard.model.GameState;
 import com.ninjaclub.dashboard.model.Player;
 import com.ninjaclub.dashboard.model.enums.Enemy;
+import com.ninjaclub.dashboard.model.enums.ResponseCode;
 import com.ninjaclub.dashboard.model.enums.Weapon;
+import com.ninjaclub.dashboard.service.common.nao.ResultNAO;
 
 /**
  * @author shreya
@@ -15,16 +18,18 @@ import com.ninjaclub.dashboard.model.enums.Weapon;
  */
 public class GameUtil {
 
-	boolean flag;
-
-	public static int level;
-
 	PlayerUtil playerUtil;
 
 	FightUtil fightUtil;
 
 	GameState gameState;
 	
+	CommonUtil commonUtil;
+	
+	boolean flag;
+
+	public static int level;
+
 	int count;
 
 	public static final Scanner sc = new Scanner(System.in);
@@ -33,28 +38,46 @@ public class GameUtil {
 		this.flag = true;
 		this.playerUtil = new PlayerUtil();
 		this.fightUtil = new FightUtil();
+		this.commonUtil = new CommonUtil();
 	}
 
-	public void start(Player player, Player enemy) {
+	public GameUtil(PlayerUtil playerUtil, FightUtil fightUtil, GameState gameState, CommonUtil commonUtil,
+			boolean flag, int count) {
+		super();
+		this.playerUtil = playerUtil;
+		this.fightUtil = fightUtil;
+		this.gameState = gameState;
+		this.commonUtil = commonUtil;
+		this.flag = flag;
+		this.count = count;
+	}
+
+	public void start(Player player, Player enemy) throws IOException {
+		ResultNAO response = new ResultNAO();
 		level++;
 		if(level > 1 && player.getHp() <= 1) level = 0;
 		welcomeMessage(level, player);
 		while(flag) {
 			if(level > 1 && player.getHp() > 1) {
 				
-				switch(sc.nextInt()) {
-				case 1:	levelUp(player, enemy);
-				break;
+				response = commonUtil.validateUserInputIsInt();
+				if(response.getCode() == ResponseCode.SUCCESS) {
+					switch(response.getData()) {
 
-				case 2: quit(player, enemy);
-				break;
+					case 1:	levelUp(player, enemy);
+					break;
 
-				default : System.out.println(MenuConstants.INVALID_CHOICE);
+					case 2: quit(player, enemy);
+					break;
+
+					default : System.out.println(MenuConstants.INVALID_CHOICE);
+					}
 				}
-
 			}else {
-
-				switch(sc.nextInt()) {
+				response = commonUtil.validateUserInputIsInt();
+				if(response.getCode() == ResponseCode.SUCCESS) {
+				switch(response.getData()) {
+				
 				case 1:	newGame(player, enemy);
 				break;
 
@@ -69,6 +92,7 @@ public class GameUtil {
 
 				default : System.out.println(MenuConstants.INVALID_CHOICE);
 				}
+			}
 			}
 		}
 
@@ -87,7 +111,7 @@ public class GameUtil {
 		}
 	}
 
-	public void levelUp(Player player, Player enemy) {
+	public void levelUp(Player player, Player enemy) throws IOException {
 		displayStats(player);
 		enemy = createEnemy(enemy);
 		displayStats(enemy);
@@ -95,8 +119,7 @@ public class GameUtil {
 	}
 
 	public Player createEnemy(Player enemy) {
-		int enemyEnumIndex;
-		sc.nextLine();
+		int enemyEnumIndex = 0;
 		int counter = 0;
 		do {
 			counter++;
@@ -105,7 +128,13 @@ public class GameUtil {
 			System.out.println(MenuConstants.NEW_GAME_MSG_2);
 			resetCount();
 			Enemy.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
-			enemyEnumIndex = sc.nextInt();
+			
+			ResultNAO response = new ResultNAO();
+			response = commonUtil.validateUserInputIsInt();
+			if(response.getCode() == ResponseCode.SUCCESS) {
+				enemyEnumIndex = response.getData();
+			}
+			
 		}while(validateEnemy(enemyEnumIndex));
 		enemyEnumIndex--;
 		String enemyName = Enemy.values()[enemyEnumIndex].getDisplayName();
@@ -117,11 +146,12 @@ public class GameUtil {
 		
 		return enemy;
 	}
-	public void newGame(Player player, Player enemy) {
+	
+	public void newGame(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
 		System.out.println(MenuConstants.NEW_GAME_STORY);
 		System.out.println(MenuConstants.SEPARATOR_STR_2);
-		sc.nextLine();
+		//sc.nextLine();
 		String playerName;
 		do {
 			System.out.println(MenuConstants.NEW_GAME_QUESTION_1);
@@ -137,11 +167,10 @@ public class GameUtil {
 		enemy = createEnemy(enemy);
 		displayStats(enemy);
 		readyForFight(player, enemy);
-
 	}
 	
 	private Weapon selectWeapon() {
-		int weaponEnumIndex;
+		int weaponEnumIndex = 0;
 		int counter = 0;
 		do {
 			counter++;
@@ -151,7 +180,11 @@ public class GameUtil {
 			System.out.println(MenuConstants.SEPARATOR_STR_2);
 			resetCount();
 			Weapon.stream().forEach( a -> System.out.println(getCount()  +a.getDisplayName()));
-			weaponEnumIndex = sc.nextInt();
+			ResultNAO response = new ResultNAO();
+			response = commonUtil.validateUserInputIsInt();
+			if(response.getCode() == ResponseCode.SUCCESS) {
+				weaponEnumIndex = response.getData();
+			}
 		}while(validateWeapon(weaponEnumIndex));
 		weaponEnumIndex--;
 		Weapon weaponName = Weapon.values()[weaponEnumIndex];
@@ -201,92 +234,128 @@ public class GameUtil {
 		return count++ +". ";
 	}
 
-	public void readyForFight(Player player, Player enemy) {
+	public void readyForFight(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.NEW_GAME_MSG_3);
+		ResultNAO response = new ResultNAO();
+		response = commonUtil.validateUserInputIsInt();
+		if(response.getCode() == ResponseCode.SUCCESS) {
+			
+			switch(response.getData()) {
+			case 1: fightUtil.fight(player, enemy);
+			break;
 
-		switch(sc.nextInt()) {
-		case 1: fightUtil.fight(player, enemy);
-		break;
+			case 2: quit(player, enemy);
+			break;
 
-		case 2: quit(player, enemy);
-		break;
-
-		default : System.out.println(MenuConstants.INVALID_CHOICE);
-		readyForFight(player, enemy);
+			default : System.out.println(MenuConstants.INVALID_CHOICE);
+			readyForFight(player, enemy);
+			}
+		}
+		else if(response.getCode() == ResponseCode.ERROR) {
+			System.out.println("Oops! Invalid Input");
+			throw new IOException();
 		}
 	}
 
-	public void newPlayersQuit() {
+	public void newPlayersQuit() throws IOException {
 		System.out.println(MenuConstants.QUIT_GAME_MSG_3);
-		switch(sc.nextInt()) {
+		ResultNAO response = new ResultNAO();
+		response = commonUtil.validateUserInputIsInt();
+		if(response.getCode() == ResponseCode.SUCCESS) {
+			switch(response.getData()) {
 
-		case 1: flag = false;
-		System.out.println("Closing the game.");
-		System.exit(0);
-		break;
+			case 1: flag = false;
+			System.out.println("Closing the game.");
+			System.exit(0);
+			break;
 
-		case 2: Player player = new Player();
-		Player enemy = new Player();
-		level--;
-		start(player, enemy);
+			case 2: Player player = new Player();
+			Player enemy = new Player();
+			level--;
+			start(player, enemy);
 
-		default : System.out.println(MenuConstants.INVALID_CHOICE);
-		newPlayersQuit();
+			default : System.out.println(MenuConstants.INVALID_CHOICE);
+			newPlayersQuit();
+			}
+		}else if(response.getCode() == ResponseCode.ERROR) {
+			System.out.println("Oops! Invalid Input");
+			throw new IOException();
 		}
+		
 	}
 
-	public void quit(Player player, Player enemy) {
+	public void quit(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.QUIT_GAME_MSG_1);
-		switch(sc.nextInt()) {
+		ResultNAO response = new ResultNAO();
+		response = commonUtil.validateUserInputIsInt();
+		if(response.getCode() == ResponseCode.SUCCESS) {
+			switch(response.getData()) {
 
-		case 1: flag = false;
-		System.out.println(MenuConstants.QUIT_GAME_MSG_2);
-		System.exit(0);
-		break;
+			case 1: flag = false;
+			System.out.println(MenuConstants.QUIT_GAME_MSG_2);
+			System.exit(0);
+			break;
 
-		case 2: gameState = new GameState(player, enemy, level);
-		gameState.saveAndQuit();
-		System.exit(0);
-		default : System.out.println(MenuConstants.INVALID_CHOICE);
-		quit(player, enemy);
+			case 2: gameState = new GameState(player, enemy, level);
+			gameState.saveAndQuit();
+			System.exit(0);
+			default : System.out.println(MenuConstants.INVALID_CHOICE);
+			quit(player, enemy);
+			}
+		}else if(response.getCode() == ResponseCode.ERROR) {
+			throw new IOException();
 		}
-
 	}
 
-	public void restart(Player player, Player enemy) {
+	public void restart(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.RESTART_MSG);
-		switch(sc.nextInt()) {
+		ResultNAO response = new ResultNAO();
+		response = commonUtil.validateUserInputIsInt();
+		if(response.getCode() == ResponseCode.SUCCESS) {
 
-		case 1: System.out.println("Restarting the game");
-		start(player, enemy);
-		break;
+			switch(response.getData()) {
 
-		case 2: quit(player, enemy);
-		break;
+			case 1: System.out.println("Restarting the game");
+			start(player, enemy);
+			break;
 
-		default : System.out.println(MenuConstants.INVALID_CHOICE);
-		restart(player, enemy);
+			case 2: quit(player, enemy);
+			break;
+
+			default : System.out.println(MenuConstants.INVALID_CHOICE);
+			restart(player, enemy);
+			}
+		}else if(response.getCode() == ResponseCode.ERROR) {
+			System.out.println("Oops! Invalid Input");
+			throw new IOException();
 		}
-
 	}
 
-	public void playNextLevel(Player player, Player enemy) {
+	public void playNextLevel(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.CONTINUE_MSG);
-		switch(sc.nextInt()) {
+		ResultNAO response = new ResultNAO();
+		response = commonUtil.validateUserInputIsInt();
+		if(response.getCode() == ResponseCode.SUCCESS) {
 
-		case 1: System.out.println("Loading next level...");
-		start(player, enemy);
-		break;
+			switch(response.getData()) {
 
-		case 2: quit(player, enemy);
-		break;
+			case 1: System.out.println("Loading next level...");
+			start(player, enemy);
+			break;
 
-		default : System.out.println(MenuConstants.INVALID_CHOICE);
-		playNextLevel(player, enemy);
+			case 2: quit(player, enemy);
+			break;
+
+			default : System.out.println(MenuConstants.INVALID_CHOICE);
+			playNextLevel(player, enemy);
+			}
+		}else {
+			System.out.println("Oops! Invalid Input");
+			throw new IOException();
 		}
 	}
 
-	public void gameOver(Player player, Player enemy) {
+	public void gameOver(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.SEPARATOR_STR_1);
 		System.out.println(MenuConstants.GAMEOVER_MSG);
 		System.out.println(MenuConstants.SEPARATOR_STR_1);
@@ -295,7 +364,7 @@ public class GameUtil {
 		restart(player, enemy);
 	}
 
-	public void victory(Player player, Player enemy) {
+	public void victory(Player player, Player enemy) throws IOException {
 		System.out.println(MenuConstants.SEPARATOR_STR_1);
 		System.out.println(MenuConstants.VICTORY_MSG);
 		System.out.println(MenuConstants.SEPARATOR_STR_1);

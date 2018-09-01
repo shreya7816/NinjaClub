@@ -28,7 +28,7 @@ public class MenuConstants {
 
 	public static final String NEW_GAME_MSG_2 = "Choose your enemy!!";
 
-	public static final String NEW_GAME_MSG_3 = "are you ready for a fight? \n1.Yes \n2.No \n>";
+	public static final String NEW_GAME_MSG_3 = "are you ready for a fight? \n1. Yes \n2. No \n>";
 
 	public static final String QUIT_GAME_MSG_1 = "Want to play later? Save before you go! \n1. Quit \n2. Save and Quit \n>";	
 
