@@ -169,7 +169,7 @@ public class GameUtil {
 		readyForFight(player, enemy);
 	}
 	
-	private Weapon selectWeapon() {
+	public Weapon selectWeapon() {
 		int weaponEnumIndex = 0;
 		int counter = 0;
 		do {
@@ -193,7 +193,7 @@ public class GameUtil {
 		return weaponName;
 	}
 
-	private boolean validateWeapon(int weaponEnumIndex) {
+	public boolean validateWeapon(int weaponEnumIndex) {
 		weaponEnumIndex--;
 		if(weaponEnumIndex > Weapon.values().length || weaponEnumIndex < 0)
 			return true;

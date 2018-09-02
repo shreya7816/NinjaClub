@@ -28,12 +28,13 @@ public class Player implements Serializable {
 		
 	}
 	
-	public Player(String name, int hp, int reputation, int healthPotionsNum) {
+	public Player(String name, int hp, int reputation, int healthPotionsNum, Weapon weapon) {
 		super();
 		this.name = name;
 		this.hp = hp;
 		this.reputation = reputation;
 		this.healthPotionsNum = healthPotionsNum;
+		this.weapon = weapon;
 	}
 
 	public String getName() {

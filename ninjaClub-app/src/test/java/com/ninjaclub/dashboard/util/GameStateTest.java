@@ -1,23 +1,41 @@
 package com.ninjaclub.dashboard.util;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.ninjaclub.dashboard.constants.PlayerConstants;
+import com.ninjaclub.dashboard.model.GameState;
+import com.ninjaclub.dashboard.model.Player;
+import com.ninjaclub.dashboard.model.enums.Weapon;
+
 public class GameStateTest {
 
-/*String playerName;
+String playerName;
 	
-	PlayerUtil playerUtil;
+	Player player;
 	
-	Weapon weapon;
+	Player enemy;
+	
+	GameState gameState;
 			
 	@Before
 	public void init() {
-		playerName = "HARRY POTTER";
-		weapon = Weapon.values()[1];
-		playerUtil = new PlayerUtil();
+		player = new Player("THOR", PlayerConstants.MAX_HP, PlayerConstants.INITIAL_REPUTATION, PlayerConstants.MAX_HEALTH_POTIONS, Weapon.values()[1]);
+		enemy = new Player("THANOS", PlayerConstants.MAX_HP, PlayerConstants.INITIAL_REPUTATION, PlayerConstants.MAX_HEALTH_POTIONS, Weapon.values()[2]);
+		gameState = new GameState(player, enemy, 1);
 	}
 	
 	@Test
-	public void testCreateNewPlayer() {
-		assertNotNull(playerUtil.createNewPlayer(playerName, weapon));
-	}*/
+	public void testSaveAndResume() {
+		gameState.saveAndQuit();
+		assertEquals("Are the game states same: ", gameState, gameState.resumeGame());
+	}
 	
 }
+	
+	
+	
+	
+

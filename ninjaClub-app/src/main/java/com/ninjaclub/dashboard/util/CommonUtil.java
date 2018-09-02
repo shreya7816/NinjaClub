@@ -8,7 +8,22 @@ import com.ninjaclub.dashboard.service.common.nao.ResultNAO;
 
 public class CommonUtil {
 
-	public static final Scanner sc = new Scanner(System.in);
+	public final Scanner sc; // = new Scanner(System.in);
+	
+	 public CommonUtil()
+     {
+        this(new Scanner(System.in));
+     }
+
+	 CommonUtil(Scanner scanner)
+     {
+         this.sc  = scanner;
+     }
+
+     public String getInput() {
+
+         return sc.nextLine();
+     }
 
 	public ResultNAO validateUserInputIsInt() {
 		ResultNAO result = new ResultNAO();
@@ -22,6 +37,7 @@ public class CommonUtil {
 		else {
 
 			System.out.println(MenuConstants.INVALID_CHOICE);
+			result.setCode(ResponseCode.ERROR);
 			return validateUserInputIsInt();
 
 		}

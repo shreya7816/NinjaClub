@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.ninjaclub.dashboard.constants.PlayerConstants;
 import com.ninjaclub.dashboard.model.Player;
+import com.ninjaclub.dashboard.model.enums.Weapon;
 
 public class PlayerTest {
 
@@ -15,8 +16,8 @@ public class PlayerTest {
 	
 	@Before
 	public void init() {
-		player = new Player("THOR", PlayerConstants.MAX_HP, PlayerConstants.INITIAL_REPUTATION, PlayerConstants.MAX_HEALTH_POTIONS);
-		enemy = new Player("THANOS", PlayerConstants.MAX_HP, PlayerConstants.INITIAL_REPUTATION, PlayerConstants.MAX_HEALTH_POTIONS);
+		player = new Player("THOR", PlayerConstants.MAX_HP, PlayerConstants.INITIAL_REPUTATION, PlayerConstants.MAX_HEALTH_POTIONS, Weapon.values()[1]);
+		enemy = new Player("THANOS", PlayerConstants.MAX_HP, PlayerConstants.INITIAL_REPUTATION, PlayerConstants.MAX_HEALTH_POTIONS,Weapon.values()[3]);
 	}
 	
 	@Test
