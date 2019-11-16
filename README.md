@@ -9,8 +9,3 @@ To play the game -> Go to Terminal type following command: (NinjaClub is the nam
 java -jar C:\Users\shrey\Desktop\NinjaClub.jar (location of the jar file)
 
 Game will start, just follow the instruction and enjoy.
-
-Default location to save the game state is: C:\\NinjaClub\\gamestate.ser.
-
-
-Written by Shreya Sharma
